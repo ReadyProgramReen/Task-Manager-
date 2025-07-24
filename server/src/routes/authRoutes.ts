@@ -50,7 +50,7 @@ try {
 
 })
 
-//Login user 
+//Login returning user 
 authRouter.post("/login", async (req:Request, res:Response)=>{
     const {email, password} = req.body;
 
