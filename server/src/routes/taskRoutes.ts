@@ -86,3 +86,54 @@ taskRoutes.post("/", authenticateToken, async (req:TypedRequest, res:Response)=>
 
 
 })
+
+//Update task for logged in user in DB 
+taskRoutes.put("/:id", authenticateToken, async (req:TypedRequest, res:Response)=>{
+     //check if user is authorized 
+    if(!req.user){
+        return res.status(401).json({message: "Unauthorized"})
+    }
+
+    //access id from req.params
+    const {id} = req.params;
+
+    //store updated form fields from req.body
+    const {title,description,completed} = req.body;
+
+    //store user id 
+    const currentUserId = req.user.id;
+
+
+    try {
+        //Make sure task exist and belongs to the logged in user 
+        const existingTask = await prisma.task.findUnique({
+            where: {id: parseInt(id)},
+        });
+
+        //if task does not exist or doesnt belong to the logged in user send message to client side 
+        if(!existingTask || existingTask.userId !== currentUserId){
+            return res.status(400).json({message : "Task not found"})
+        };
+
+        //Update the current task in the Task model db
+        const updatedTask = await prisma.task.update({
+            where: {id: parseInt(id)},
+            data:{
+                title,
+                description,
+                completed,
+            }
+        })
+
+
+        //send message to client and the updated task
+        res.status(200).json({
+            message : "Task updated ",
+            task : updatedTask
+        })
+        
+    } catch (error) {
+        console.error("Error updating task :", error);
+        res.status(500).json({message:"Server error"});
+    }
+})
