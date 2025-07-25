@@ -159,7 +159,7 @@ taskRoutes.delete("/:id", authenticateToken, async (req:TypedRequest, res:Respon
         if(!existingTask || existingTask.userId !== currentUserId){
             return res.status(404).json({message: "Task not found, or doesnt belong to user"})
         };
-    
+         
         //delete from db
         await prisma.task.delete({
             where:{id: parseInt(id)}
