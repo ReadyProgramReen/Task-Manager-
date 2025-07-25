@@ -87,14 +87,14 @@ taskRoutes.post("/", authenticateToken, async (req:TypedRequest, res:Response)=>
 
 })
 
-//Update task for logged in user in DB 
+//Update task for logged in user 
 taskRoutes.put("/:id", authenticateToken, async (req:TypedRequest, res:Response)=>{
      //check if user is authorized 
     if(!req.user){
         return res.status(401).json({message: "Unauthorized"})
     }
 
-    //access id from req.params
+    //access task id from req.params
     const {id} = req.params;
 
     //store updated form fields from req.body
@@ -136,4 +136,44 @@ taskRoutes.put("/:id", authenticateToken, async (req:TypedRequest, res:Response)
         console.error("Error updating task :", error);
         res.status(500).json({message:"Server error"});
     }
+})
+
+//Delete task for logged in user 
+taskRoutes.delete("/:id", authenticateToken, async (req:TypedRequest, res:Response)=>{
+    //check if user is authorized 
+    if(!req.user){
+        return res.status(401).json({message: "Unathorized"})
+    };
+    //access task id from req params
+    const {id} = req.params
+
+    //store user id from middleware
+    const currentUserId = req.user.id
+
+    try {
+        //Make sure task exist and belongs to the logged in user     
+        const existingTask = await prisma.task.findUnique({
+            where:{id : parseInt(id)}
+        });
+        //if task does not exist or doesnt belong to the logged in user send message to client side 
+        if(!existingTask || existingTask.userId !== currentUserId){
+            return res.status(404).json({message: "Task not found, or doesnt belong to user"})
+        };
+    
+        //delete from db
+        await prisma.task.delete({
+            where:{id: parseInt(id)}
+        });
+
+        //inform client that the task has been deleted successfully from the DB
+        res.status(200).json({
+            message:"Task deleted successfully",
+        })
+        
+    } catch (error) {
+        console.log("Error deleting task", error);
+        res.status(500).json({message: "Server error"})
+        
+    }
+
 })
