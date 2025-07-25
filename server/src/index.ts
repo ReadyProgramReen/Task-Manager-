@@ -15,7 +15,7 @@ app.use(express.json());
 
 //routes
 app.use('/api', authRouter);
-app.use('/task', taskRoutes);
+app.use('/api/task', taskRoutes);
 
 //TEST route
 app.get('/',(req:Request,res:Response)=>{

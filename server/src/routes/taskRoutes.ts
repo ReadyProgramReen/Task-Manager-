@@ -6,9 +6,18 @@ export const taskRoutes = Router();
 
 const prisma = new PrismaClient();
 
+interface TypedRequest extends Request {
+  user?: {
+    id: number;
+    email: string;
+    iat: number;
+    exp: number;
+  };
+}
 
-//Get all tasks for the logged-in user 
-taskRoutes.get('/',authenticateToken, async (req:Request,res:Response)=>{
+
+//Get all tasks for the logged-in user in DB 
+taskRoutes.get('/',authenticateToken, async(req:TypedRequest,res:Response)=>{
     //narrow types
     if(!req.user){
         return res.status(400).json({message: "Unauthorized"})
@@ -30,5 +39,50 @@ taskRoutes.get('/',authenticateToken, async (req:Request,res:Response)=>{
         console.error("Error fetching all task for user", error);
         res.status(500).json({message: "Server error"})
     }
+
+})
+
+//Added a new task to the DB for the logged-in user 
+taskRoutes.post("/", authenticateToken, async (req:TypedRequest, res:Response)=>{
+    //check if user is authorized 
+    if(!req.user){
+        return res.status(401).json({message: "Unauthorized"})
+    }
+
+    //store title and content from request body
+    const {title , description} = req.body;
+
+   //store user id 
+   const userId = req.user.id;
+
+   try {
+
+    //check if title field is empty
+    if(!title){
+        return res.status(400).json({message: "Title is required"})
+    }
+
+    //create new task in Task model
+    const newTask = await prisma.task.create({
+        data:{
+            title,
+            description,
+            userId,
+        }
+    });
+
+    //inform client of successful task creation
+    res.status(201).json({
+        message:"Task created successfully",
+        task:newTask,
+    })
+
+   } catch (error) {
+    console.error("Error creating task:", error);
+    res.status(500).json({message: "Server error"})
+    
+   }
+
+
 
 })
