@@ -1,3 +1,5 @@
+"use client"
+
 import {createContext, useContext, useState, ReactNode} from "react";
 
 // define User type when logged in 
@@ -16,7 +18,7 @@ interface AuthContextType {
 }
 
 //create the context object with type definition or undefined 
-const AuthContext  = createContext<AuthContextType | undefined>(undefined)
+export const AuthContext  = createContext<AuthContextType | undefined>(undefined)
 
 //wrapper component 
 export const AuthProvider = ({children}: {children: ReactNode})=>{
@@ -56,4 +58,9 @@ export const AuthProvider = ({children}: {children: ReactNode})=>{
 //create custom hook; instead of importing useContent(authContext everywhere); just call useAuth
 export const useAuth = ()=>{
     const context = useContext(AuthContext)
+    //add helpful error check
+    if(!context){
+        throw new Error("useAuth must be used within an AuthProvider")
+    }
+    return context;
 }
