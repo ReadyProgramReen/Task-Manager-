@@ -23,6 +23,10 @@ export default function Dashboardpage() {
     //track new task input 
     const [newTitle, setNewTitle] = useState("");
     const [newDescription, setNewDescription] = useState("")
+    //tracked edits 
+    const [editingTask, setEditingTask] = useState<Task | null>(null);
+    const [editTitle, setEditTitle] = useState("");
+    const [editDescription, setEditDescription] = useState("");
 
 
     useEffect(()=>{
@@ -102,8 +106,44 @@ export default function Dashboardpage() {
 
     }
 
-    //handle task deletion
+    //edit all Task field
+    const handleEdit=async (task:Task)=>{
+        console.log("edit button")
+        setEditingTask(task);
+        setEditTitle(task.title);
+        setEditDescription(task.description);
+    }
 
+    //edit all field in Task
+    const handleUpdate = async (e:React.FormEvent)=>{
+        e.preventDefault()
+        if (!editingTask) return;
+
+        try {
+            //PUT request to edit all the field in DB
+            const res = await axios.put(`/api/task/${editingTask.id}`,{
+                title: editTitle,
+                description: editDescription,
+            })
+    
+            //store new task list 
+            const updatedTask = res.data.task;
+    
+            //set Task state
+            setTasks((prevTask)=>
+            prevTask.map((task)=>task.id == updatedTask.id ? updatedTask : task)
+            )
+    
+            //clear edit state
+            setEditingTask(null);
+            setEditTitle("");
+            setEditDescription("");
+        } catch (error) {
+            
+        }
+
+    }
+    //handle task deletion
     const handleDelete = async (taskId:number)=>{
         try {
             //DELETE request
@@ -164,17 +204,40 @@ export default function Dashboardpage() {
                     <li key={task.id}>
                       <label>
 
-                        <strong>{task.title}</strong>: {task.description}
-
                         <input type="checkbox" checked= {task.completed} onChange={()=>handleToggleComplete(task.id, !task.completed)} />
+                        <strong>{task.title}</strong>: {task.description}{" "}
 
-                        <button onClick={()=>handleDelete(task.id)} style={{ marginLeft: "10px" }}>DELETE</button>
+                        <button onClick={()=>handleEdit(task)}>EDIT</button>
 
                      </label>
+                        <button onClick={()=>handleDelete(task.id)} style={{ marginLeft: "10px" }}>DELETE</button>
                     </li>
                 ) )
          )}
         </ul>
+
+        {/* //edit task  */}
+        {editingTask && (
+  <div>
+    <h3>Editing Task</h3>
+    <form onSubmit={handleUpdate}>
+      <input
+        type="text"
+        value={editTitle}
+        onChange={(e) => setEditTitle(e.target.value)}
+        placeholder="Title"
+      />
+      <input
+        type="text"
+        value={editDescription}
+        onChange={(e) => setEditDescription(e.target.value)}
+        placeholder="Description"
+      />
+      <button type="submit">Update</button>
+      <button type="button" onClick={() => setEditingTask(null)}>Cancel</button>
+    </form>
+  </div>
+)}
     </div>
   )
 }
