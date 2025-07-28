@@ -5,6 +5,7 @@ import {createContext, useContext, useState, ReactNode} from "react";
 // define User type when logged in 
 interface User {
     id: number,
+    name:string,
     email: string,
 }
 
