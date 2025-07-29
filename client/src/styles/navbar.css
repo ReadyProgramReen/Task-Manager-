@@ -1,0 +1,59 @@
+/* Navbar Styles */
+.navbar {
+  background-color: #282c34;
+  padding: 0.5rem 1rem;
+  color: white;
+}
+
+/* Flex the UL to space between logo and links */
+.navbar ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Logo title styling */
+.navbar h1.title {
+  color: rgb(168, 53, 53);
+  border: 2px solid rgb(96, 86, 86);
+  border-radius: 40px;
+  padding: 10px;
+  margin: 0;
+}
+
+.navbar h1.title:hover {
+  color: aliceblue;
+  background-color: rgb(96, 86, 86);
+}
+
+/* Links */
+.navbar li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 0.5rem;
+}
+
+.navbar li a:hover {
+  text-decoration: underline;
+}
+
+/* Logout button */
+.logout {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.logout:hover {
+  background-color: white;
+  color: #282c34;
+  font-weight: bold;
+}

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import axios from "@/lib/axios";
+import "@/styles/auth.css";
+
 
 
 export default function LoginPage(){
@@ -39,31 +41,31 @@ export default function LoginPage(){
     };
 
     return(
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="">Email:</label>
+         <div className="auth-container">
+
+            <form className="auth-form-container" onSubmit={handleSubmit}>
+                <h2>Login</h2>
+                
                     <input type="email" 
+                    placeholder="Email"
                     value={email}
                     onChange={e=>setEmail(e.target.value) }
                     />
-                </div>
+                
 
-                <div>
-                    <label htmlFor="">Password:</label>
                     <input type="Password" 
+                    placeholder="Password"
                     value={password}
                     onChange={e=>setPassword(e.target.value) }
                     />
-                </div>
 
                 {/* error message */}
                 {error && <p className="error-message">{error}</p>}
 
                 <button type="submit" className="submit-button">Login</button>
 
-                
+                {/* navigate user to register */}
+                <p onClick={() => router.push("/register")}> Don't have an account? Register</p>
             </form>
         </div>
     )

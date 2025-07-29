@@ -46,9 +46,9 @@ export default function RegisterPage(){
 
 
   return (
-     <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
+     <div className="auth-container">
+      <form className='auth-form-container' onSubmit={handleSubmit}>
+      <h2>Register</h2>
          <input
           type="name"
           name="name"
@@ -57,7 +57,6 @@ export default function RegisterPage(){
           onChange={handleChange}
           required
         />
-        <br />
         <input
           type="email"
           name="email"
@@ -66,7 +65,6 @@ export default function RegisterPage(){
           onChange={handleChange}
           required
         />
-        <br />
         <input
           type="password"
           name="password"
@@ -75,9 +73,11 @@ export default function RegisterPage(){
           onChange={handleChange}
           required
         />
-        <br />
         <button type="submit">Register</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {/* navigate user to login */}
+       <p onClick={() => router.push("/login")}>Already have an account? Login</p>
       </form>
     </div>
   )

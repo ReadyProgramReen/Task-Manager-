@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
 import { useRouter } from "next/navigation";
+import "@/styles/navbar.css"
 
 import React from 'react'
 
@@ -21,22 +22,24 @@ export default function Navbar() {
     }
 
   return (
-        <nav style={{ display: "flex", justifyContent: "space-between", padding: "1rem", background: "#eee" }}>
-      <div>
-        <Link href="/dashboard">MoveMaker</Link>
-      </div>
-      <div>
+    <nav className="navbar">
+        <ul>
+        <li >
+          <Link href={user? "/dashboard": "/login"}><h1 className="title">Move-Makers{">"}</h1></Link>
+        </li>
         {user ? (
-          <>
-            <span style={{ marginRight: "1rem" }}>Hello, {user.name}</span>
-            <button onClick={handleLogout}>Logout</button>
-          </>
+          <li>
+            <span>Hello, {user.name.split("")[0].toUpperCase()}{user.name.slice(1)}</span>
+            <button className="logout" onClick={handleLogout}>Logout</button>
+          </li>
+
         ) : (
-          <>
+          <li>
             <Link href="/login">Login</Link> | <Link href="/register">Register</Link>
-          </>
+          </li>
         )}
-      </div>
+       
+      </ul>
     </nav>
     
   )
