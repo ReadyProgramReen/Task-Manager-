@@ -17,11 +17,12 @@
 
 /* Logo title styling */
 .navbar h1.title {
-  color: rgb(168, 53, 53);
+  color: #280501;
   border: 2px solid rgb(96, 86, 86);
-  border-radius: 40px;
-  padding: 10px;
+  border-radius: 4px;
+  padding: 6px;
   margin: 0;
+  background-color: rgb(81, 50, 50);;
 }
 
 .navbar h1.title:hover {

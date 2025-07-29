@@ -4,6 +4,8 @@ import {useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthProvider';
 import axios from "@/lib/axios";
+import "@/styles/dashboard.css";
+
 
 //Task type structure 
 interface Task {
@@ -163,12 +165,13 @@ export default function Dashboardpage() {
     }
 
   return (
-    <div>
-        <h1>Welcome to your dashboard, {user.name}</h1>
+    <div  className='dashboard-container'>
+        <h1>Welcome to your dashboard, {user.name.split("")[0].toUpperCase()}{user.name.slice(1)} !</h1>
 
         {/* Field to add new task */}
 
-        <form onSubmit={handleCreateTask}>
+        <form onSubmit={handleCreateTask} className='add-task-form {
+'>
             <div>
                 <label>Title:</label>
                 <input
@@ -194,7 +197,7 @@ export default function Dashboardpage() {
 
         {/* Display all task */}
         <h2>Your Task:</h2>
-        <ul>
+        <ul className='task-list'>
          {!tasks ? (
             <p>Loading tasks...</p>
             ) : tasks.length === 0 ? (
@@ -202,15 +205,17 @@ export default function Dashboardpage() {
             ) : (
                 tasks.map((task) => (
                     <li key={task.id}>
-                      <label>
-
+                      <span>
                         <input type="checkbox" checked= {task.completed} onChange={()=>handleToggleComplete(task.id, !task.completed)} />
                         <strong>{task.title}</strong>: {task.description}{" "}
+                      </span>
 
+                      <span>
                         <button onClick={()=>handleEdit(task)}>EDIT</button>
-
-                     </label>
                         <button onClick={()=>handleDelete(task.id)} style={{ marginLeft: "10px" }}>DELETE</button>
+
+                      </span>
+
                     </li>
                 ) )
          )}
@@ -218,26 +223,26 @@ export default function Dashboardpage() {
 
         {/* //edit task  */}
         {editingTask && (
-  <div>
-    <h3>Editing Task</h3>
-    <form onSubmit={handleUpdate}>
-      <input
-        type="text"
-        value={editTitle}
-        onChange={(e) => setEditTitle(e.target.value)}
-        placeholder="Title"
-      />
-      <input
-        type="text"
-        value={editDescription}
-        onChange={(e) => setEditDescription(e.target.value)}
-        placeholder="Description"
-      />
-      <button type="submit">Update</button>
-      <button type="button" onClick={() => setEditingTask(null)}>Cancel</button>
-    </form>
-  </div>
-)}
+         <div className='edit-task-inline'>
+            <h3>Editing Task:</h3>
+            <form onSubmit={handleUpdate}>
+                <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                placeholder="Title"
+                />
+                <input
+                type="text"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="Description"
+                />
+                <button type="submit">Update</button>
+                <button type="button" className= "cancel-btn" onClick={() => setEditingTask(null)}>Cancel</button>
+            </form>
+        </div>
+        )}
     </div>
   )
 }

@@ -1,0 +1,126 @@
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Centered Header */
+.dashboard-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Add Task Form - Horizontal Layout */
+.add-task-form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.add-task-form label {
+  font-weight: bold;
+}
+
+.add-task-form input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.add-task-form button {
+  padding: 0.5rem 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.add-task-form button:hover {
+  background-color: #45a049;
+}
+
+.dashboard-container h2{
+  margin-bottom: 20px;
+  color: #9d2214;
+
+}
+/* Task List */
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-list li {
+  background-color: #8f4f4f;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-list li span strong {
+  padding-left:  10px;
+  color:#280501;
+  font-size: 18px;
+}
+.task-list button {
+  margin-left: 10px;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  background-color: #e74c3c;
+  color: white;
+  cursor: pointer;
+}
+
+.task-list button:hover {
+  background-color: #c0392b;
+}
+
+.edit-task-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.edit-task-inline h3{
+  color: #9d2214;
+}
+
+.edit-task-inline input {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+
+}
+
+.edit-task-inline button {
+  padding: 0.4rem 0.8rem;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-task-inline button:hover {
+  background-color: #45a049;
+}
+
+.edit-task-inline .cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.edit-task-inline .cancel-btn:hover {
+  background-color: #aaa;
+}
