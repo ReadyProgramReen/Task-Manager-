@@ -25,7 +25,7 @@ export default function RegisterPage(){
   };
 
     //handle submit 
-    const handleSubmit = async(e:React.FormEvent)=>{
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>)=>{
         //prevents page reload
         e.preventDefault();
 
@@ -38,8 +38,8 @@ export default function RegisterPage(){
             router.push("/login")
           }
           
-        } catch (err:any) {
-                setError(err.response?.data?.error || "Something went wrong.");          
+        } catch (err) {
+                setError("Something went wrong.");          
         }
 
     }

@@ -65,7 +65,7 @@ export default function LoginPage(){
                 <button type="submit" className="submit-button">Login</button>
 
                 {/* navigate user to register */}
-                <p onClick={() => router.push("/register")}> Don't have an account? Register</p>
+                <p onClick={() => router.push("/register")}> Don&apos;t have an account? Register</p>
             </form>
         </div>
     )
