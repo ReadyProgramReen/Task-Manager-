@@ -166,7 +166,11 @@ export default function Dashboardpage() {
 
   return (
     <div  className='dashboard-container'>
-        <h1>Welcome to your dashboard, {user.name.split("")[0].toUpperCase()}{user.name.slice(1)} !</h1>
+        <h1>Welcome to your dashboard, {user?.name && (
+        <span>
+            {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+        </span>
+        )} !</h1>
 
         {/* Field to add new task */}
 

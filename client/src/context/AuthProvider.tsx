@@ -1,67 +1,76 @@
-"use client"
+"use client";
 
-import {createContext, useContext, useState, ReactNode} from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { getUserFromToken } from "@/lib/authHelpers";
 
-// define User type when logged in 
+// User type
 interface User {
-    id: number,
-    name:string,
-    email: string,
+  id: number;
+  name: string;
+  email: string;
 }
 
-//define the context shape
+// Context shape
 interface AuthContextType {
-    user: User | null,
-    token: string | null,
-    login : (user: User, token : string)=> void ; // a function that takes in user and token and return nothing
-    logout : ()=>void;
-
+  user: User | null;
+  token: string | null;
+  login: (user: User, token: string) => void;
+  logout: () => void;
 }
 
-//create the context object with type definition or undefined 
-export const AuthContext  = createContext<AuthContextType | undefined>(undefined)
+// Create context
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-//wrapper component 
-export const AuthProvider = ({children}: {children: ReactNode})=>{
+// Provider component
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    //keeping track of the current user and token
-    const [user,setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string|null>(null);
+  // Fetch token and user on first load
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-    //define the login function
-    const login = (newUser:User, newToken:string)=>{
-        //store the user info and token in the corresponding setstate 
-        setUser(newUser);
-        setToken(newToken);
-
-        //set token in localStorage
-        localStorage.setItem("token", newToken);
-    };
-
-    //define the logout function 
-    const logout = ()=>{
-        //set states back to null
-        setUser(null);
-        setToken(null);
-
-        //remove token from local storage 
-        localStorage.removeItem("token");
-    };
-
-    //provide the context; gives values to all component inside <AuthProvider> (Now you can call useAuth() to get access)
-    return (
-        <AuthContext.Provider value={{user,token,login,logout}}>
-            {children}
-        </AuthContext.Provider>
-    );
-}
-
-//create custom hook; instead of importing useContent(authContext everywhere); just call useAuth
-export const useAuth = ()=>{
-    const context = useContext(AuthContext)
-    //add helpful error check
-    if(!context){
-        throw new Error("useAuth must be used within an AuthProvider")
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+      const userFromToken = getUserFromToken();
+      if (userFromToken) {
+        setUser(userFromToken);
+      }
     }
-    return context;
-}
+
+    setLoading(false);
+  }, []);
+
+  // Login function
+  const login = (newUser: User, newToken: string) => {
+    setUser(newUser);
+    setToken(newToken);
+    localStorage.setItem("token", newToken);
+  };
+
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("token");
+  };
+
+  if (loading) return null;
+
+  return (
+    <AuthContext.Provider value={{ user, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+// Custom hook
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

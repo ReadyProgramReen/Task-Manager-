@@ -29,7 +29,11 @@ export default function Navbar() {
         </li>
         {user ? (
           <li>
-            <span>Hello, {user.name.split("")[0].toUpperCase()}{user.name.slice(1)}</span>
+            <span>Hello, {user?.name && (
+              <span>
+                Hello, {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+              </span>
+            )}</span>
             <button className="logout" onClick={handleLogout}>Logout</button>
           </li>
 
