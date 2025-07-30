@@ -34,9 +34,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
-      const userFromToken = getUserFromToken();
-      if (userFromToken) {
-        setUser(userFromToken);
+      
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
     }
 
@@ -44,18 +45,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // Login function
-  const login = (newUser: User, newToken: string) => {
+    const login = (newUser: User, newToken: string) => {
     setUser(newUser);
     setToken(newToken);
     localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(newUser)); 
   };
 
   // Logout function
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("token");
-  };
+    const logout = () => {
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user"); 
+    };
 
   if (loading) return null;
 

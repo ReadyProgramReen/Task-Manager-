@@ -18,6 +18,9 @@ interface Task {
 export default function Dashboardpage() {
     //store user data from useAuth
     const {user} = useAuth()
+
+    // console.log("Current user:", user);
+
     //use naviagtion from useRouter
     const router = useRouter()
     //track task
