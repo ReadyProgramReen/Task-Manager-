@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000 ;
 
 // middleware
 app.use(cors({
-  origin: "http://localhost:3000", 
+ origin: ["http://localhost:3000", "https://move-makers.netlify.app"],
   credentials: true, 
 }));
 app.use(express.json());
